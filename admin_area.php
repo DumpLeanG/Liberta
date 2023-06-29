@@ -33,6 +33,15 @@
                         foreach ($tables_array as $array){
                             echo "<li class='admin_section_block_list_item'><a class='admin_section_block_list_item_link' href='?table_name=".$array['Tables_in_hotel']."'>".$array['Tables_in_hotel']."</a></li>";
                         }
+                        echo "<br>";
+                        $show_views = "SHOW FULL TABLES FROM hotel WHERE Table_Type = 'VIEW'"; 
+                        $views_result = mysqli_query($connect, $show_views) or die(mysqli_error($connect));
+                        while ($views_row = mysqli_fetch_assoc($views_result)) {
+                            $views_array[] = $views_row;
+                        } 
+                        foreach ($views_array as $array){
+                            echo "<li class='admin_section_block_list_item'><a class='admin_section_block_list_item_link' href='?view_name=".$array['Tables_in_hotel']."'>".$array['Tables_in_hotel']."</a></li>";
+                        }
                     ?>
                 </ul>
                         <?php
@@ -92,6 +101,48 @@
                                 }
                             echo "</div>
                             <a href='admin_area_create.php?table_name=$table_name' class='admin_section_block_create'>Добавить запись</a>";
+                            } elseif (isset($_GET['view_name'])) {
+                                echo "<div class='admin_section_block_table'>
+                                    <div class='admin_section_block_table_row_title'>";
+                                $view_name = $_GET['view_name'];
+                                $show_columns = "SHOW COLUMNS FROM $view_name;"; 
+                                $columns_result = mysqli_query($connect, $show_columns) or die(mysqli_error($connect));
+                                while ($columns_row = mysqli_fetch_assoc($columns_result)) {
+                                    $columns_array[] = $columns_row;
+                                } 
+                                $index_col = 0;
+                                $col_array = array();
+                                foreach ($columns_array as $array){
+                                    echo "<div class='admin_section_block_table_row_title_cell'>
+                                        <span class='admin_section_block_table_row_title_cell_txt'>".$array['Field']."</span>
+                                    </div>";
+                                    $index_col++;
+                                    $col_array[$index_col] = $array['Field'];
+                                }
+                                echo "</div>";
+                                $select_info = "SELECT * FROM $view_name;"; 
+                                $info_result = mysqli_query($connect, $select_info) or die(mysqli_error($connect));
+                                while ($info_row = mysqli_fetch_assoc($info_result)) {
+                                    $info_array[] = $info_row;
+                                } 
+                                foreach ($info_array as $arr){
+                                    $index = 0;
+                                    echo "<div class='admin_section_block_table_row'>";
+                                    foreach ($columns_array as $array) {
+                                        $index++;
+                                        if($array['Field'] === 'image') {
+                                        echo "<div class='admin_section_block_table_row_cell'>
+                                            <span class='admin_section_block_table_row_cell_txt'><img src='assets/images/".$arr[$col_array[$index]]."' alt='' class='admin_section_block_table_row_cell_txt_img'></span>
+                                        </div>";
+                                        } else {
+                                        echo "<div class='admin_section_block_table_row_cell'>
+                                            <span class='admin_section_block_table_row_cell_txt'>".$arr[$col_array[$index]]."</span>
+                                        </div>";
+                                        }
+                                    }
+                                echo "</div>";
+                                }
+                            echo "</div>";
                             }
                         ?>
                 </div>
