@@ -1,7 +1,7 @@
 # Гостиница Liberta
 
 
-<img src="https://github.com/DumpLeanG/Liberta/blob/master/assets/images/WLogo.svg" width="100" text-align="center">
+<img src="https://github.com/DumpLeanG/Liberta/blob/master/assets/images/WLogo.svg" width="120" align="center">
 
 Этот репозиторий содержит исходный код и ресурсы для веб-сайта гостиницы Liberta, размещенного на GitHub Pages (https://pages.github.com/). На сайте представлена информация о нашей гостинице, услугах, номерах, бронировании и контактах.
 
